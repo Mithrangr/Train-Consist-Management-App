@@ -28,5 +28,5 @@ public class TrainAppUC10 {
                 .reduce(0, Integer::sum);
 
         System.out.println("Total Seating Capacity: " + totalCapacity);
-    }
+         }
 }
