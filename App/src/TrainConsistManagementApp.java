@@ -11,7 +11,7 @@ class Bogie {
     }
 }
 
-public class TrainSafetyApp {
+public class TrainConsistManagementApp {
     public static void main(String[] args) {
 
         List<Bogie> bogies = Arrays.asList(
