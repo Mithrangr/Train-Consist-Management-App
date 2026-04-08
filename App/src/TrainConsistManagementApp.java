@@ -1,29 +1,24 @@
-import java.util.Scanner;
+import java.util.*;
 
-public class BinarySearchApp {
+public class DefensiveSearchApp {
     public static void main(String[] args) {
 
-        String[] bogieIds = {"BG101", "BG205", "BG309", "BG412", "BG523"};
+        List<String> bogieIds = new ArrayList<>();
+
+        if (bogieIds.isEmpty()) {
+            throw new IllegalStateException("No bogies available for search");
+        }
 
         Scanner sc = new Scanner(System.in);
         System.out.print("Enter Bogie ID to search: ");
         String key = sc.nextLine();
 
-        int low = 0, high = bogieIds.length - 1;
         boolean found = false;
 
-        while (low <= high) {
-            int mid = (low + high) / 2;
-
-            int res = key.compareTo(bogieIds[mid]);
-
-            if (res == 0) {
+        for (String id : bogieIds) {
+            if (id.equals(key)) {
                 found = true;
                 break;
-            } else if (res < 0) {
-                high = mid - 1;
-            } else {
-                low = mid + 1;
             }
         }
 
