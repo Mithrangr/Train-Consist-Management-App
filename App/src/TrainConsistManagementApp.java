@@ -1,7 +1,5 @@
-
-
 import java.util.*;
-import java.util.function.Predicate;
+import java.util.stream.*;
 
 class Bogie {
     String type;
@@ -13,24 +11,38 @@ class Bogie {
     }
 }
 
-public class TrainConsistManagementApp {
+public class PerformanceApp {
     public static void main(String[] args) {
 
-        List<Bogie> bogies = Arrays.asList(
-                new Bogie("Cylindrical", "Petroleum"),
-                new Bogie("Box", "Coal"),
-                new Bogie("Cylindrical", "Petroleum")
-        );
+        List<Bogie> bogies = new ArrayList<>();
 
-        Predicate<Bogie> rule = b ->
-                !(b.type.equals("Cylindrical") && !b.cargo.equals("Petroleum"));
+        for (int i = 0; i < 100000; i++) {
+            bogies.add(new Bogie("Cylindrical", "Petroleum"));
+            bogies.add(new Bogie("Box", "Coal"));
+        }
 
-        boolean isSafe = bogies.stream().allMatch(rule);
+        long startLoop = System.nanoTime();
 
-        if (isSafe)
-            System.out.println("Train is Safety Compliant");
-        else
-            System.out.println("Train is NOT Safety Compliant");
+        List<Bogie> loopResult = new ArrayList<>();
+        for (Bogie b : bogies) {
+            if (b.type.equals("Cylindrical")) {
+                loopResult.add(b);
+            }
+        }
 
+        long endLoop = System.nanoTime();
+        long loopTime = endLoop - startLoop;
+
+        long startStream = System.nanoTime();
+
+        List<Bogie> streamResult = bogies.stream()
+                .filter(b -> b.type.equals("Cylindrical"))
+                .collect(Collectors.toList());
+
+        long endStream = System.nanoTime();
+        long streamTime = endStream - startStream;
+
+        System.out.println("Loop Time: " + loopTime + " ns");
+        System.out.println("Stream Time: " + streamTime + " ns");
     }
 }
