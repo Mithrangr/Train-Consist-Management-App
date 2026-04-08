@@ -1,41 +1,22 @@
-class CargoSafetyException extends RuntimeException {
-    CargoSafetyException(String message) {
-        super(message);
-    }
-}
-
-class GoodsBogie {
-    String shape;
-    String cargo;
-
-    GoodsBogie(String shape) {
-        this.shape = shape;
-    }
-
-    void assignCargo(String cargo) {
-        try {
-            if (shape.equals("Rectangular") && cargo.equals("Petroleum")) {
-                throw new CargoSafetyException("Unsafe cargo assignment");
-            }
-            this.cargo = cargo;
-            System.out.println("Cargo assigned: " + cargo);
-        } catch (CargoSafetyException e) {
-            System.out.println(e.getMessage());
-        } finally {
-            System.out.println("Operation Completed");
-        }
-    }
-}
-
-public class TrainSafetyExceptionApp {
+public class BubbleSortApp {
     public static void main(String[] args) {
 
-        GoodsBogie b1 = new GoodsBogie("Rectangular");
-        b1.assignCargo("Petroleum");
+        int[] capacities = {72, 50, 90, 30, 60};
 
-        GoodsBogie b2 = new GoodsBogie("Cylindrical");
-        b2.assignCargo("Petroleum");
+        int n = capacities.length;
 
-        System.out.println("Program Continues...");
+        for (int i = 0; i < n - 1; i++) {
+            for (int j = 0; j < n - i - 1; j++) {
+                if (capacities[j] > capacities[j + 1]) {
+                    int temp = capacities[j];
+                    capacities[j] = capacities[j + 1];
+                    capacities[j + 1] = temp;
+                }
+            }
+        }
+
+        for (int c : capacities) {
+            System.out.print(c + " ");
+        }
     }
 }
