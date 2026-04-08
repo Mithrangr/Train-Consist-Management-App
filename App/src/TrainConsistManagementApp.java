@@ -1,48 +1,41 @@
-import java.util.*;
-import java.util.stream.*;
-
-class Bogie {
-    String type;
-    String cargo;
-
-    Bogie(String type, String cargo) {
-        this.type = type;
-        this.cargo = cargo;
+class InvalidCapacityException extends Exception {
+    InvalidCapacityException(String message) {
+        super(message);
     }
 }
 
-public class PerformanceApp {
+class PassengerBogie {
+    String type;
+    int capacity;
+
+    PassengerBogie(String type, int capacity) throws InvalidCapacityException {
+        if (capacity <= 0) {
+            throw new InvalidCapacityException("Capacity must be greater than zero");
+        }
+        this.type = type;
+        this.capacity = capacity;
+    }
+}
+
+public class TrainExceptionApp {
     public static void main(String[] args) {
 
-        List<Bogie> bogies = new ArrayList<>();
+        try {
+            PassengerBogie b1 = new PassengerBogie("Sleeper", 72);
+            System.out.println(b1.type + " " + b1.capacity);
 
-        for (int i = 0; i < 100000; i++) {
-            bogies.add(new Bogie("Cylindrical", "Petroleum"));
-            bogies.add(new Bogie("Box", "Coal"));
+            PassengerBogie b2 = new PassengerBogie("AC Chair", -10);
+            System.out.println(b2.type + " " + b2.capacity);
+
+        } catch (InvalidCapacityException e) {
+            System.out.println(e.getMessage());
         }
 
-        long startLoop = System.nanoTime();
-
-        List<Bogie> loopResult = new ArrayList<>();
-        for (Bogie b : bogies) {
-            if (b.type.equals("Cylindrical")) {
-                loopResult.add(b);
-            }
+        try {
+            PassengerBogie b3 = new PassengerBogie("First Class", 0);
+            System.out.println(b3.type + " " + b3.capacity);
+        } catch (InvalidCapacityException e) {
+            System.out.println(e.getMessage());
         }
-
-        long endLoop = System.nanoTime();
-        long loopTime = endLoop - startLoop;
-
-        long startStream = System.nanoTime();
-
-        List<Bogie> streamResult = bogies.stream()
-                .filter(b -> b.type.equals("Cylindrical"))
-                .collect(Collectors.toList());
-
-        long endStream = System.nanoTime();
-        long streamTime = endStream - startStream;
-
-        System.out.println("Loop Time: " + loopTime + " ns");
-        System.out.println("Stream Time: " + streamTime + " ns");
     }
 }
