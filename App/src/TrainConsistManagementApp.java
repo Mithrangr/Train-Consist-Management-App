@@ -1,32 +1,36 @@
-import java.util.Scanner;
-import java.util.regex.*;
 
-public class TrainValidationApp {
+
+import java.util.*;
+import java.util.function.Predicate;
+
+class Bogie {
+    String type;
+    String cargo;
+
+    Bogie(String type, String cargo) {
+        this.type = type;
+        this.cargo = cargo;
+    }
+}
+
+public class TrainConsistManagementApp {
     public static void main(String[] args) {
 
-        Scanner sc = new Scanner(System.in);
+        List<Bogie> bogies = Arrays.asList(
+                new Bogie("Cylindrical", "Petroleum"),
+                new Bogie("Box", "Coal"),
+                new Bogie("Cylindrical", "Petroleum")
+        );
 
-        System.out.print("Enter Train ID: ");
-        String trainId = sc.nextLine();
+        Predicate<Bogie> rule = b ->
+                !(b.type.equals("Cylindrical") && !b.cargo.equals("Petroleum"));
 
-        System.out.print("Enter Cargo Code: ");
-        String cargoCode = sc.nextLine();
+        boolean isSafe = bogies.stream().allMatch(rule);
 
-        String trainPattern = "TRN-\\d{4}";
-        String cargoPattern = "PET-[A-Z]{2}";
+        if (isSafe)
+            System.out.println("Train is Safety Compliant");
+        else
+            System.out.println("Train is NOT Safety Compliant");
 
-        Pattern p1 = Pattern.compile(trainPattern);
-        Pattern p2 = Pattern.compile(cargoPattern);
-
-        Matcher m1 = p1.matcher(trainId);
-        Matcher m2 = p2.matcher(cargoCode);
-
-        if (m1.matches() && m2.matches()) {
-            System.out.println("Valid Input");
-        } else {
-            System.out.println("Invalid Input");
-        }
-
-        sc.close();
     }
 }
